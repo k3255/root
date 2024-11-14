@@ -1,0 +1,12 @@
+[submodule "odi-sdk-crypto"]
+	path = odi-sdk-crypto
+	url = http://gitlab.raondevops.com/omnionedigitalid/source/sdk/odi-sdk-crypto.git
+	branch = opensourcernd
+[submodule "odi-sdk-wallet"]
+	path = odi-sdk-wallet
+	url = http://gitlab.raondevops.com/omnionedigitalid/source/sdk/odi-sdk-wallet.git
+	branch = opensourcernd
+[submodule "odi-sdk-did"]
+	path = odi-sdk-did
+	url = http://gitlab.raondevops.com/omnionedigitalid/source/sdk/odi-sdk-did.git
+	branch = opensourcernd
