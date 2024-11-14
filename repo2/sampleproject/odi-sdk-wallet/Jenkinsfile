@@ -1,0 +1,48 @@
+pipeline {
+    agent {
+       kubernetes{
+           inheritFrom 'jenkins-build-agent'
+       }
+    }
+
+    stages {
+        stage('check and deploy') {
+            steps {
+                container('gradle') {
+                    git branch: "develop",
+                    credentialsId: 'gitlab-ssh-key',
+                    url: 'git@gitlab.raondevops.com:omnionedigitalid/source/sdk/odi-sdk-crypto.git'
+                        sh '''
+                        chmod +x gradlew
+                        ./gradlew build -x test
+                        rm -rf  `ls .|grep -v build`
+                        mkdir odi-sdk-crypto
+                        mv build odi-sdk-crypto
+                        mv odi-sdk-crypto ../
+                        ls -alrt
+                        '''
+                    git branch: "develop",
+                    credentialsId: 'gitlab-ssh-key',
+                    url: 'git@gitlab.raondevops.com:omnionedigitalid/source/sdk/odi-sdk-wallet.git'
+                        sh '''
+                        ls -alrt
+                        chmod +x gradlew
+                        ./gradlew build -x test
+                        cd build/libs
+                        ls -alrt
+                        '''
+                }
+                container('amazon') {
+                    git branch: "develop",
+                    credentialsId: 'gitlab-ssh-key',
+                    url: 'git@gitlab.raondevops.com:omnionedigitalid/source/sdk/odi-sdk-wallet.git'
+                        sh '''
+                        ls -alrt
+                        cd build/libs
+                        aws s3 cp *.jar s3://raon-server-s3/Wallet_SDK/
+                        '''
+                }
+            }
+        }
+    }
+}

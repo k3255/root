@@ -1,0 +1,38 @@
+pipeline {
+    agent {
+       kubernetes{
+           inheritFrom 'jenkins-build-agent'
+       }
+    }
+
+    stages {
+        stage('check and deploy') {
+            steps {
+
+                git branch: "develop",
+                credentialsId: 'gitlab-ssh-key',
+                url: 'git@gitlab.raondevops.com:omnionedigitalid/source/sdk/odi-sdk-crypto.git'
+
+                container('gradle') {
+                    withCredentials([gitUsernamePassword(credentialsId: 'gitlab-access-token')]) {
+                        sh '''
+                        chmod +x gradlew
+                        ./gradlew build -x test
+                        cd build/libs
+                        ls -alrt
+                        '''
+                    }
+                }
+                    
+                container('amazon') {
+                    withCredentials([gitUsernamePassword(credentialsId: 'gitlab-access-token')]) {
+                        sh '''
+                        cd build/libs
+                        aws s3 cp *.jar s3://raon-server-s3/Crypto_SDK/
+                        '''
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,45 @@
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+group 'com.raonsecure.odi'
+version '1.0.0.2'
+
+repositories {
+    // Use jcenter for resolving dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    mavenCentral()
+    google()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+ //   targetCompatibility = JavaVersion.VERSION_17 
+}
+
+dependencies {
+ 	implementation 'com.google.guava:guava:28.2-jre'
+    implementation "com.madgag.spongycastle:core:1.54.0.0"
+    implementation "com.madgag.spongycastle:pkix:1.54.0.0"
+    implementation "com.madgag.spongycastle:prov:1.54.0.0"
+ //   implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
+    testImplementation 'junit:junit:3.8.1'
+    compileOnly 'org.slf4j:slf4j-api:1.7.32'
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url = uri("file://${System.properties['user.home']}/.m2/repository") // 로컬 Maven 저장소 경로 지정
+        }
+    }
+}
+tasks.named('test') {
+    useJUnitPlatform()
+}

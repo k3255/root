@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+//    targetCompatibility = JavaVersion.VERSION_17
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
+    implementation project (':odi-sdk-did')
+    implementation project (':odi-sdk-wallet')
+    implementation project (':odi-sdk-crypto')
+
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'com.google.guava:guava:32.0.1-jre'
+    implementation "com.madgag.spongycastle:core:1.58.0.0"
+    implementation "com.madgag.spongycastle:pkix:1.54.0.0"
+    implementation "com.madgag.spongycastle:prov:1.58.0.0"
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
+
+    testImplementation 'junit:junit:3.8.1'
+    compileOnly 'org.slf4j:slf4j-api:1.7.32'
+    compileOnly'jakarta.enterprise:jakarta.enterprise.cdi-api:3.0.0'
+    compileOnly'jakarta.json.bind:jakarta.json.bind-api:2.0.0'
+    compileOnly'jakarta.json:jakarta.json-api:2.0.1'
+}
+
+test {
+    useJUnitPlatform()
+}
