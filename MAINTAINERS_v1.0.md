@@ -11,4 +11,4 @@ If you have any questions or require support, please reach out to the maintainer
 
 | Name        | GitHub    | Email                  |
 | ----------- | --------- | ---------------------- |
-|sjkim | sjkim  | sjkim@raoncorp.com |
+| sjkim | sjkim  | sjkim@raoncorp.com |
